@@ -1,2 +1,2 @@
 # lightning-boost
-Extension of the PyTorch Lightning Framework to train models even faster.
+Extension of the PyTorch Lightning Framework to develop models even faster.
