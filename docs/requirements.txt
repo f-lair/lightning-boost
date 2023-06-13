@@ -1,0 +1,10 @@
+mkdocs==1.4.3
+mkdocs-autorefs==0.4.1
+mkdocs-exclude-search==0.6.5
+mkdocs-gen-files==0.5.0
+mkdocs-literate-nav==0.6.0
+mkdocs-material==9.1.9
+mkdocs-material-extensions==1.1.1
+mkdocs-section-index==0.3.5
+mkdocstrings==0.21.2
+mkdocstrings-python==0.10.1

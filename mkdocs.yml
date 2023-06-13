@@ -1,0 +1,82 @@
+site_name: Lightning-Boost Documentation
+
+site_author: Fabrice von der Lehr
+
+site_description: Documentation for the Python module lightning-boost, which is an extension of the PyTorch Lightning framework.
+
+copyright: Copyright &copy; 2023 Fabrice von der Lehr
+
+repo_url: https://github.com/f-lair/lightning-boost
+
+repo_name: GitHub
+
+nav:
+- Home: 'index.md'
+- Tutorials: 
+  - 'tutorials/index.md'
+  - MNIST Classification: 'tutorials/mnist.md'
+- How-to Guides: 'how-to-guides.md'
+- Reference: reference/
+- Explanation: 'explanation.md'
+
+theme:
+  name: "material"
+  palette: 
+    # Palette toggle for dark mode
+    - scheme: slate
+      primary: amber
+      accent: deep orange
+      toggle:
+        icon: material/lightbulb-outline
+        name: Activate light mode
+    # Palette toggle for light mode
+    - scheme: default
+      primary: amber
+      accent: deep orange
+      toggle:
+        icon: material/lightbulb
+        name: Activate dark mode
+  icon:
+    logo: material/lightning-bolt
+  favicon: img/favicon.png
+  features:
+    - content.code.annotate
+    - content.code.copy
+    - navigation.instant
+    - navigation.sections
+    - navigation.tabs
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/f-lair
+      name: GitHub
+
+markdown_extensions:
+  - attr_list
+  - def_list
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets:
+      base_path: 
+        - './examples/mnist/'
+      dedent_subsections: True
+  - pymdownx.superfences
+
+plugins:
+- search
+- exclude-search:
+    exclude:
+    - reference/SUMMARY.md
+- gen-files:
+    scripts:
+    - docs/gen_ref_pages.py
+- literate-nav:
+    nav_file: SUMMARY.md
+- section-index
+- mkdocstrings

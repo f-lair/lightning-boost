@@ -1,0 +1,8 @@
+.vscode/
+.venv/
+*.egg-info/
+*.pyc
+TODO.md
+lightning_logs/
+download/
+dist/
