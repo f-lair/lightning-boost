@@ -3,6 +3,7 @@
 ![PyPI](https://img.shields.io/pypi/v/lightning-boost)
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/lightning-boost)](https://pypi.org/project/lightning-boost/)
 [![codecov](https://codecov.io/gh/f-lair/lightning-boost/branch/main/graph/badge.svg?token=EMWBCHT0G3)](https://codecov.io/gh/f-lair/lightning-boost)
+[![CI Status](https://github.com/f-lair/lightning-boost/actions/workflows/ci.yml/badge.svg)](https://github.com/f-lair/lightning-boost/actions/workflows/ci.yml)
 [![Documentation Status](https://readthedocs.org/projects/lightning-boost/badge/?version=latest)](https://lightning-boost.readthedocs.io/en/latest/?badge=latest)
 ![License](https://img.shields.io/github/license/f-lair/lightning-boost)
 
