@@ -157,7 +157,13 @@ def test_configure_optimizers(dummy_system):
     assert set(configuration.keys()) == {'optimizer', 'lr_scheduler'}
     assert isinstance(configuration['optimizer'], SGD)
     assert isinstance(configuration['lr_scheduler'], dict)
-    assert set(configuration['lr_scheduler'].keys()) == {'scheduler', 'interval', 'frequency'}
+    assert set(configuration['lr_scheduler'].keys()) == {
+        'scheduler',
+        'interval',
+        'frequency',
+        'monitor',
+    }
     assert isinstance(configuration['lr_scheduler']['scheduler'], LinearLR)
     assert configuration['lr_scheduler']['interval'] == lr_scheduling_policy.interval
     assert configuration['lr_scheduler']['frequency'] == lr_scheduling_policy.frequency
+    assert configuration['lr_scheduler']['monitor'] == lr_scheduling_policy.monitor
