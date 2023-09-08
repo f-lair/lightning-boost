@@ -5,27 +5,37 @@ import pytest
 
 
 def test_main():
-    subprocess.run(
-        [sys.executable, "./system_tests/main.py", "fit", "--config=./system_tests/config.yaml"]
-    )
-    subprocess.run(
+    completed_process = subprocess.run(
         [
             sys.executable,
-            "./system_tests/main.py",
+            "./tests/system_tests/main.py",
+            "fit",
+            "--config=./tests/system_tests/config.yaml",
+        ]
+    )
+    assert completed_process.returncode == 0
+
+    completed_process = subprocess.run(
+        [
+            sys.executable,
+            "./tests/system_tests/main.py",
             "validate",
-            "--ckpt_path=./lightning_logs/dummy_test/checkpoints/last-epoch=1-step=8.ckpt",
-            "--config=./system_tests/config.yaml",
+            "--ckpt_path=./tests/lightning_logs/dummy_test/checkpoints/last-epoch=1-step=8.ckpt",
+            "--config=./tests/system_tests/config.yaml",
         ]
     )
-    subprocess.run(
+    assert completed_process.returncode == 0
+
+    completed_process = subprocess.run(
         [
             sys.executable,
-            "./system_tests/main.py",
+            "./tests/system_tests/main.py",
             "test",
-            "--ckpt_path=./lightning_logs/dummy_test/checkpoints/last-epoch=1-step=8.ckpt",
-            "--config=./system_tests/config.yaml",
+            "--ckpt_path=./tests/lightning_logs/dummy_test/checkpoints/last-epoch=1-step=8.ckpt",
+            "--config=./tests/system_tests/config.yaml",
         ]
     )
+    assert completed_process.returncode == 0
 
 
 if __name__ == "__main__":

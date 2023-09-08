@@ -13,7 +13,7 @@ class MNISTTransform(BaseTransform):
     """Composite transform for MNIST classification task."""
 
     def __init__(self) -> None:
-        """Initiates transform for MNIST dataset."""
+        """Initializes transform for MNIST dataset."""
 
         self.transform = CompositeTransform(
             [ToTensorTransform(), StandardizeTransform([0.1307], [0.3081])]
@@ -72,7 +72,7 @@ class StandardizeTransform(BaseTransform):
 
     def __init__(self, mean: List[float], std: List[float]) -> None:
         """
-        Initiates transform.
+        Initializes transform.
 
         Args:
             mean (List[float]): Channel-wise means of input data.

@@ -20,7 +20,7 @@ class MNISTDataset(BaseDataset):
         **kwargs
     ) -> None:
         """
-        Initiates MNIST dataset.
+        Initializes MNIST dataset.
 
         Args:
             root (str): Directory, where data is to be stored.
