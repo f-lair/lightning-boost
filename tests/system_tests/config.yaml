@@ -80,7 +80,7 @@ model_checkpoint_min_loss:
 compile_system: false
 log_name: null
 log_version: 'run__%d_%m_%Y__%H_%M_%S'
-num_folds: 1
+num_folds: 2
 fold_index: 0
 fold_seed: 42
 ckpt_path: null
