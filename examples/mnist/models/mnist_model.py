@@ -10,7 +10,7 @@ class MNISTModel(BaseModel):
 
     def __init__(self) -> None:
         """
-        Initiates FC-784-256-256-10 model.
+        Initializes FC-784-256-256-10 model.
         """
 
         super().__init__()

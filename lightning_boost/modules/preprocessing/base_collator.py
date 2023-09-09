@@ -1,3 +1,18 @@
+# Copyright 2023 Fabrice von der Lehr
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+
 from typing import Callable, Dict, List, Tuple
 
 import torch
@@ -10,7 +25,7 @@ class BaseCollator:
         self, pad_val: int = 0, pad_shape: List[int] = [], pad_dims: List[int] = []
     ) -> None:
         """
-        Initiates collator, which transforms a list of batch items to a tensor with additional
+        Initializes collator, which transforms a list of batch items to a tensor with additional
         batch dimension. In case of different shapes, padding is applied.
 
         Args:
@@ -96,8 +111,7 @@ class BaseCollator:
         for idx, pad_dim in enumerate(self.pad_dims):
             dims[pad_dim] = max(dims[pad_dim], self.pad_shape[idx])
 
-        # optimization taken from default collate_fn, using shared memory to avoid a copy when
-        # passing data to the main process
+        # optimization using shared memory to avoid a copy when passing data to the main process
         if get_worker_info() is not None:
             elem = batch[0]
             numel = int(
@@ -129,8 +143,7 @@ class BaseCollator:
             Tensor: Concatenated 1-dimensional tensor.
         """
 
-        # optimization taken from default collate_fn, using shared memory to avoid a copy when
-        # passing data to the main process
+        # optimization using shared memory to avoid a copy when passing data to the main process
         out = None
         if get_worker_info() is not None:
             elem = batch[0]

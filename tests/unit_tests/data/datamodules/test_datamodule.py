@@ -83,12 +83,18 @@ def test_setup():
     datamodule.setup('fit')
 
     assert isinstance(datamodule.train_dataset, Dataset)
-    assert isinstance(datamodule.val_dataset, Dataset)
+    assert isinstance(datamodule.test_dataset, Dataset)
 
+    datamodule = DummyDatamodule()
+    datamodule.setup('validate')
+
+    assert isinstance(datamodule.train_dataset, Dataset)
+    assert isinstance(datamodule.test_dataset, Dataset)
+
+    datamodule = DummyDatamodule()
     datamodule.setup('test')
 
     assert isinstance(datamodule.train_dataset, Dataset)
-    assert isinstance(datamodule.val_dataset, Dataset)
     assert isinstance(datamodule.test_dataset, Dataset)
 
 
@@ -98,6 +104,7 @@ def test_train_dataloader(dummy_datamodule):
 
     inputs, targets = next(iter(train_dataloader))
     x, y = inputs['x'], targets['y']
+    print(x)
     assert_close(x, torch.zeros_like(x))
     assert y == 1
 
@@ -108,6 +115,7 @@ def test_val_dataloader(dummy_datamodule):
 
     inputs, targets = next(iter(val_dataloader))
     x, y = inputs['x'], targets['y']
+    print(x)
     assert_close(x, torch.full_like(x, 0.4))
     assert y == 1
 

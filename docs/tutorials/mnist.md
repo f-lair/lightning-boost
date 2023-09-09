@@ -41,6 +41,11 @@ In the following, we go step by step through the implementation of these modules
 
 ## Dataset
 
+??? src-code "Full source code"
+    ``` py title="./data/datasets/mnist_dataset.py"
+    --8<-- "data/datasets/mnist_dataset.py"
+    ```
+
   We start by defining a specialized *dataset* class `MNISTDataset` that is derived from the base class `lightning_boost.data.datasets.BaseDataset`, which is itself an extended version of PyTorch's `torch.utils.data.Dataset` class.
   `BaseDataset` extends the basic `Dataset` class of PyTorch by the automatic application of transforms to input and target data as well as the automatic data download, if not located on disk yet.
 
@@ -113,6 +118,11 @@ As already mentioned in [Dataset/Get-Item](#get-item), input and target data are
 
 ### Transforms
 
+??? src-code "Full source code"
+    ``` py title="./modules/preprocessing/mnist_transform.py"
+    --8<-- "modules/preprocessing/mnist_transform.py"
+    ```
+
 For the general transforms, Lightning-Boost provides the base class `BaseTransform` as well as the class `CompositeTransform`, which inherits from `BaseTransform` and allows the composition of several `BaseTransforms`. 
 Specialization of `BaseTransform` requires only the implementation of the `__call__()` method, which takes the dictionaries for input and target data and returns two dictionaries containing the transformed input and target data.
 
@@ -143,6 +153,11 @@ Since the mean and standard deviation of the MNIST dataset are known, they are p
 
 ### Collator
 
+??? src-code "Full source code"
+    ``` py title="./modules/preprocessing/mnist_collator.py"
+    --8<-- "modules/preprocessing/mnist_collator.py"
+    ```
+
 For the collator, Lightning-Boost provides the base class `BaseCollator`. 
 When implementing a specialized subclass of it, we only need to override the method `get_collate_fn()`, which returns a dictionary of (string, function) pairs:
 For each key in the two input and target data dictionaries returned by the used transform, we need to specify a collator function.
@@ -162,19 +177,24 @@ With the mentioned properties, we use `pad_collate_nd` for `"x"` and `flatten_co
 
 ## Datamodule
 
+??? src-code "Full source code"
+    ``` py title="./data/datamodules/mnist_datamodule.py"
+    --8<-- "data/datamodules/mnist_datamodule.py"
+    ```
+
 The *datamodule* manages the distribution of data to the system during training, validation and testing.
 To implement it for our MNIST example, we need to extend the base class `BaseDatamodule`.
-Here, we need to implement the four methods `get_transform()`, `get_collator()`, `get_dataset_type()`, and `get_train_val_test_split()`.
+Here, we need to implement the four methods `get_transform()`, `get_collator()`, `get_dataset_type()`, and `get_train_test_split()`.
 Thanks to the preliminary work already done, this is less than it sounds.
 
 For the first two methods, we can simply return instances of the `MNISTTransform` and `MNISTCollator`, respectively.
 The `get_dataset_type()` method then returns the type of our custom dataset, i.e., `MNISTDataset`.
 
-Finally, `get_train_val_test_split()` is meant to create splits of the total dataset for training, validation and testing.
+Finally, `get_train_test_split()` is meant to create splits of the total dataset for training and testing.
 Since the MNIST dataset is pre-split into a training and a test dataset, we directly use the latter as such.
-For the training-validation split, on the other hand, we create a random split of the traning data utilizing the function `torch.utils.data.random_split`.
-Here, we use the attribute `val_ratio` of `BaseDatamodule`, which is passed on initialization.
-Analogously, there is an attribute `test_ratio`, which we do not need for this MNIST example.
+The training-validation split, on the other hand, is by default created as a random split of the traning data utilizing the function `torch.utils.data.random_split` and the attribute `val_ratio` of `BaseDatamodule`, which is passed on initialization.
+If needed, one would have to override the method `get_train_val_split()` to change that behavior.
+In analogy to `val_ratio`, there is also an attribute `test_ratio`, which we do not need for this MNIST example, but could use when implementing `get_train_test_split()`.
 
 Note that `BaseDatamodule` provides the method `instantiate_dataset()`, where we do not need to pass the three parameters `root`, `download`, `transform` of a `BaseDataset`, but only additional parameters of our custom dataset class (in this case, `train`). 
 
@@ -184,6 +204,11 @@ Note that `BaseDatamodule` provides the method `instantiate_dataset()`, where we
 
 
 ## Model
+
+??? src-code "Full source code"
+    ``` py title="./models/mnist_model.py"
+    --8<-- "models/mnist_model.py"
+    ```
 
 The *model* is the actual predictive, trainable component in the system.
 In Lightning-Boost, we implement a model by extending the base class `BaseModel`, which is a `LightningModule` equipped with an additional name attribute.
@@ -198,6 +223,11 @@ For this example, we use a basic fully-connected network architecture with two 2
 
 
 ## System
+
+??? src-code "Full source code"
+    ``` py title="./systems/mnist_system.py"
+    --8<-- "systems/mnist_system.py"
+    ```
 
 Yet the *system* manages the whole training, validation and testing process, its implementation is rather simple.
 Again, we extend a base class provided by Lightning-Boost, in this case `BaseSystem`.

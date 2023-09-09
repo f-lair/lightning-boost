@@ -1,4 +1,4 @@
-# lightning.pytorch==2.0.2
+# lightning.pytorch==2.0.8
 seed_everything: true
 trainer:
   accelerator: auto
@@ -10,8 +10,6 @@ trainer:
     class_path: lightning.pytorch.loggers.TensorBoardLogger
     init_args:
       save_dir: lightning_logs
-      name: null
-      version: run__%d_%m_%Y__%H_%M_%S
       log_graph: false
       default_hp_metric: true
       prefix: ''
@@ -49,6 +47,8 @@ trainer:
   sync_batchnorm: false
   reload_dataloaders_every_n_epochs: 0
   default_root_dir: null
+model_summary:
+  max_depth: -1
 model_checkpoint_last:
   dirpath: null
   filename: last-{epoch}-{step}
@@ -78,6 +78,11 @@ model_checkpoint_min_loss:
   every_n_epochs: null
   save_on_train_epoch_end: null
 compile_system: false
+log_name: null
+log_version: run__%d_%m_%Y__%H_%M_%S
+num_folds: 1
+fold_index: 0
+fold_seed: -1
 ckpt_path: null
 data:
   class_path: data.datamodules.MNISTDatamodule
@@ -85,6 +90,7 @@ data:
     data_dir: ./data/download/
     batch_size: 32
     num_workers: 0
+    shuffle: true
     val_ratio: 0.1
     test_ratio: 0.1
 system:
@@ -124,7 +130,6 @@ system:
     lr_scheduler:
       class_path: lightning.pytorch.cli.ReduceLROnPlateau
       init_args:
-        monitor: val_total-loss
         mode: min
         factor: 0.1
         patience: 10

@@ -15,6 +15,7 @@ nav:
 - Tutorials: 
   - 'tutorials/index.md'
   - MNIST Classification: 'tutorials/mnist.md'
+  - Cross Validation: 'tutorials/cross-validation.md'
 - How-to Guides: 'how-to-guides.md'
 - Reference: reference/
 - Explanation: 'explanation.md'
@@ -51,6 +52,9 @@ extra:
       link: https://github.com/f-lair
       name: GitHub
 
+extra_css:
+  - stylesheets/extra.css
+
 markdown_extensions:
   - attr_list
   - def_list
@@ -67,6 +71,7 @@ markdown_extensions:
         - './examples/mnist/'
       dedent_subsections: True
   - pymdownx.superfences
+  - pymdownx.details
 
 plugins:
 - search

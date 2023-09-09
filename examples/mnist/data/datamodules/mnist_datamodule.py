@@ -42,24 +42,18 @@ class MNISTDatamodule(BaseDatamodule):
 
         return MNISTTransform()
 
-    def get_train_val_test_split(self) -> Tuple[Dataset, Dataset, Dataset]:
+    def get_train_test_split(self) -> Tuple[Dataset, Dataset]:
         """
-        Returns train, validation, and test datasets.
+        Returns train (incl. validation data) and test datasets (only for cross-validation).
 
         Returns:
-            Tuple[Dataset, Dataset, Dataset]: Train, validation, test dataset.
+            Tuple[Dataset, Dataset]: Train, test dataset.
         """
 
         train_dataset = self.instantiate_dataset(train=True)
         test_dataset = self.instantiate_dataset(train=False)
 
-        # random train-test split
-
-        train_dataset, val_dataset = random_split(
-            train_dataset, [1 - self.val_ratio, self.val_ratio]
-        )
-
-        return train_dataset, val_dataset, test_dataset
+        return train_dataset, test_dataset
 
 
 # --8<-- [end:mnist_datamodule]

@@ -98,11 +98,25 @@ hide:
       - Returns type (not instance!) of the used dataset.
   - `get_transform(self, **kwargs) -> BaseTransform`:
       - Returns transform instance for the used dataset.
-  - `get_train_val_test_split(self) -> Tuple[BaseDataset, BaseDataset, BaseDataset]`:
-      - Returns training-validation-test split for the used dataset.
-      - Use the attributes `val_ratio` and `test_ratio` to build the splits based on pre-defined ratios.
+  - `get_train_test_split(self) -> Tuple[BaseDataset, BaseDataset]`:
+      - Returns training-test split for the used dataset.
+      - Use the attribute `test_ratio` to build the split based on pre-defined ratios.
       - Use the method `instantiate_dataset()` to get an instance of the used dataset without explicitly passing the parameters `root`, `download` and `transform` of `BaseDataset`.
 
+### Optional methods
+
+  - `get_train_val_split(self) -> Tuple[BaseDataset, BaseDataset]`:
+      - Returns training-validation split for the used dataset.
+      - By default, uses the attribute `test_ratio` to build the split based on pre-defined ratios.
+  - `get_cv_train_val_split(self) -> Tuple[BaseDataset, BaseDataset]`:
+      - Returns training-validation split for the used dataset, when performing cross-validation.
+      - By default, splits dataset into k parts and selects (k-1)/k and 1/k as training and validation split, respectively.
+  - `determine_cv_indices(self) -> None`:
+      - Determines permutation of data indices for cross-validation.
+      - By default, generates random permutation using the RNG seed `fold_seed`.
+  - `determine_fold_len(self) -> None`:
+      - Determines fold sizes for cross-validation.
+      - By default, uses equisized folds.
 
 ## Model
 
