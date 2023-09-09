@@ -15,6 +15,7 @@ nav:
 - Tutorials: 
   - 'tutorials/index.md'
   - MNIST Classification: 'tutorials/mnist.md'
+  - Cross Validation: 'tutorials/cross-validation.md'
 - How-to Guides: 'how-to-guides.md'
 - Reference: reference/
 - Explanation: 'explanation.md'

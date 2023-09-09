@@ -184,17 +184,17 @@ With the mentioned properties, we use `pad_collate_nd` for `"x"` and `flatten_co
 
 The *datamodule* manages the distribution of data to the system during training, validation and testing.
 To implement it for our MNIST example, we need to extend the base class `BaseDatamodule`.
-Here, we need to implement the four methods `get_transform()`, `get_collator()`, `get_dataset_type()`, and `get_train_val_test_split()`.
+Here, we need to implement the four methods `get_transform()`, `get_collator()`, `get_dataset_type()`, and `get_train_test_split()`.
 Thanks to the preliminary work already done, this is less than it sounds.
 
 For the first two methods, we can simply return instances of the `MNISTTransform` and `MNISTCollator`, respectively.
 The `get_dataset_type()` method then returns the type of our custom dataset, i.e., `MNISTDataset`.
 
-Finally, `get_train_val_test_split()` is meant to create splits of the total dataset for training, validation and testing.
+Finally, `get_train_test_split()` is meant to create splits of the total dataset for training and testing.
 Since the MNIST dataset is pre-split into a training and a test dataset, we directly use the latter as such.
-For the training-validation split, on the other hand, we create a random split of the traning data utilizing the function `torch.utils.data.random_split`.
-Here, we use the attribute `val_ratio` of `BaseDatamodule`, which is passed on initialization.
-Analogously, there is an attribute `test_ratio`, which we do not need for this MNIST example.
+The training-validation split, on the other hand, is by default created as a random split of the traning data utilizing the function `torch.utils.data.random_split` and the attribute `val_ratio` of `BaseDatamodule`, which is passed on initialization.
+If needed, one would have to override the method `get_train_val_split()` to change that behavior.
+In analogy to `val_ratio`, there is also an attribute `test_ratio`, which we do not need for this MNIST example, but could use when implementing `get_train_test_split()`.
 
 Note that `BaseDatamodule` provides the method `instantiate_dataset()`, where we do not need to pass the three parameters `root`, `download`, `transform` of a `BaseDataset`, but only additional parameters of our custom dataset class (in this case, `train`). 
 

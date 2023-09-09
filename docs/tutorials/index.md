@@ -17,6 +17,14 @@ In deep learning circles, it has gained almost the status of a *Hello World* pro
 [Start MNIST tutorial :material-school:](mnist.md){ .md-button }
 
 
+## Cross-Validation
+
+Cross-validation is an effective technique to mitigate the effects of selection bias when training a deep learning model.
+In this tutorial, we show how to perform cross-validation in Lightning-Boost with minimal effort.
+
+[Start cross-validation tutorial :material-school:](cross-validation.md){ .md-button }
+
+
 ## Multi-Task Pretraining-Finetuning
 
 T.B.D
