@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "lightning-boost"
-version = "v2.0.0"
+version = "v2.0.1"
 description = "PyTorch Lightning extension for faster model development."
 authors = ["Fabrice von der Lehr <fabrice.vonderlehr222@gmail.com>"]
 license = "Apache-2.0"

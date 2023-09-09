@@ -1,4 +1,11 @@
 
+<a id='changelog-v2.0.1'></a>
+# v2.0.1 — 2023-09-09
+
+## Fixed
+
+- Fixed documentation build.
+
 <a id='changelog-v2.0.0'></a>
 # v2.0.0 — 2023-09-09
 
