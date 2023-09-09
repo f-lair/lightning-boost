@@ -37,6 +37,17 @@ def test_main():
     )
     assert completed_process.returncode == 0
 
+    completed_process = subprocess.run(
+        [
+            sys.executable,
+            "./tests/system_tests/main.py",
+            "fit",
+            "--config=./tests/system_tests/config.yaml",
+            "--num_folds=2",
+        ]
+    )
+    assert completed_process.returncode == 0
+
 
 if __name__ == "__main__":
     test_main()

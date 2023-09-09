@@ -174,7 +174,50 @@ class BaseDatamodule(LightningDataModule):
         if self.train_dataset is None and self.val_dataset is None and self.test_dataset is None:
             self.train_dataset, self.test_dataset = self.get_train_test_split()
 
+    def get_train_val_split(self) -> Tuple[Dataset, Dataset]:
+        """
+        Returns reduced train and validation datasets from whole train dataset.
+        Applies basic random split.
+
+        Returns:
+            Tuple[Dataset, Dataset]: Train, validation dataset.
+        """
+
+        train_dataset, val_dataset = random_split(
+            self.train_dataset, [1 - self.val_ratio, self.val_ratio]  # type: ignore
+        )
+
+        return train_dataset, val_dataset
+
+    def get_cv_train_val_split(self) -> Tuple[Dataset, Dataset]:
+        """
+        Returns reduced train and validation datasets from whole train dataset.
+        Applies basic k-fold cross-validation split.
+
+        Returns:
+            Tuple[Dataset, Dataset]: Train, validation dataset.
+        """
+
+        assert self.fold_len is not None
+        assert self.cv_indices is not None
+
+        slice_1 = slice(0, self.fold_index * self.fold_len)
+        slice_2 = slice((self.fold_index + 1) * self.fold_len, len(self.train_dataset))  # type: ignore
+        train_indices = torch.concat((self.cv_indices[slice_1], self.cv_indices[slice_2]))  # type: ignore
+        val_indices = self.cv_indices[  # type: ignore
+            self.fold_index * self.fold_len : (self.fold_index + 1) * self.fold_len
+        ]
+
+        train_dataset = Subset(self.train_dataset, train_indices)  # type: ignore
+        val_dataset = Subset(self.train_dataset, val_indices)  # type: ignore
+
+        return train_dataset, val_dataset
+
     def determine_cv_indices(self) -> None:
+        """
+        Determines data index permutation for cross-validation.
+        """
+
         assert self.train_dataset is not None
 
         if self.cv_indices is None:
@@ -183,38 +226,30 @@ class BaseDatamodule(LightningDataModule):
             self.cv_indices = torch.randperm(len(self.train_dataset), dtype=torch.int64, generator=rng)  # type: ignore
 
     def determine_fold_len(self) -> None:
+        """
+        Determines length of each fold in cross-validation.
+        """
+
         assert self.train_dataset is not None
 
         if self.fold_len is None:
             self.fold_len = int(math.ceil(len(self.train_dataset) / self.num_folds))  # type: ignore
 
-    def get_train_val_split(self) -> Tuple[Dataset, Dataset]:
+    def _get_train_val_split(self) -> Tuple[Dataset, Dataset]:
         """
         Returns reduced train and validation datasets from whole train dataset.
-        Applies basic split based on cross-validation.
+        Applies regular split or cross-validation, depending on number of folds.
 
         Returns:
-            Tuple[Dataset, Dataset]: Train, test dataset.
+            Tuple[Dataset, Dataset]: Train, validation dataset.
         """
 
-        self.determine_cv_indices()
-        self.determine_fold_len()
-        assert self.fold_len is not None
-
         if self.num_folds > 1:
-            slice_1 = slice(0, self.fold_index * self.fold_len)
-            slice_2 = slice((self.fold_index + 1) * self.fold_len, len(self.train_dataset))  # type: ignore
-            train_indices = torch.concat((self.cv_indices[slice_1], self.cv_indices[slice_2]))  # type: ignore
-            val_indices = self.cv_indices[  # type: ignore
-                self.fold_index * self.fold_len : (self.fold_index + 1) * self.fold_len
-            ]
-
-            train_dataset = Subset(self.train_dataset, train_indices)  # type: ignore
-            val_dataset = Subset(self.train_dataset, val_indices)  # type: ignore
+            self.determine_cv_indices()
+            self.determine_fold_len()
+            train_dataset, val_dataset = self.get_cv_train_val_split()
         else:
-            train_dataset, val_dataset = random_split(
-                self.train_dataset, [1 - self.val_ratio, self.val_ratio]  # type: ignore
-            )
+            train_dataset, val_dataset = self.get_train_val_split()
 
         return train_dataset, val_dataset
 
@@ -226,7 +261,7 @@ class BaseDatamodule(LightningDataModule):
             DataLoader: Dataloader.
         """
 
-        train_dataset, _ = self.get_train_val_split()
+        train_dataset, _ = self._get_train_val_split()
 
         return DataLoader(
             train_dataset,  # type: ignore
@@ -245,7 +280,7 @@ class BaseDatamodule(LightningDataModule):
             DataLoader: Dataloader.
         """
 
-        _, val_dataset = self.get_train_val_split()
+        _, val_dataset = self._get_train_val_split()
 
         return DataLoader(
             val_dataset,  # type: ignore
